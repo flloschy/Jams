@@ -4,10 +4,11 @@
 Build one Tetris alternative like Hextris, Hatetris or Hatris.
 
 ### How to play
-Use the `left` arrow-key for moving tiles left  
-Use the `right` arrow-key for moving tiles right  
-Use the `up` arrow-key for rotating tiles counterclockwise  
-Use the `down` arrow-key for rotating tiles clockwise  
+Use the `<left>` arrow-key for moving tiles left  
+Use the `<right>` arrow-key for moving tiles right  
+Use the `<up>` arrow-key for rotating tiles counterclockwise  
+Use the `<down>` arrow-key for rotating tiles clockwise  
+Use the `<space>` key fot spawning a new tile
 
 ### Comment
 I was planing on doing something in the margins of [Tricky Towers](https://www.trickytowers.com/).  

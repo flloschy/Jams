@@ -1,6 +1,6 @@
-import pygame, math, numpy as np, random, time
-
+import pygame, math, numpy as np, random
 from scipy import interpolate
+
 pygame.font.init()
 font = pygame.font.Font(pygame.font.get_default_font(), 20)
 errorMsg = ""
@@ -9,7 +9,6 @@ player1wins = 0
 player2 = "p2"
 player2wins = 0
 playerTurn = True
-
 
 class NodeColors:
     active = (200, 200, 200)

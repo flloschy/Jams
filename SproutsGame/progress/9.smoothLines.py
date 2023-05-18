@@ -1,4 +1,4 @@
-import pygame, math, numpy as np, random, time
+import pygame, math, numpy as np, random
 
 from scipy import interpolate
 pygame.font.init()

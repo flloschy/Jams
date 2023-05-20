@@ -26,6 +26,7 @@ class Line:
     def __init__(self, color):
         self.color = color
         self.points:list[point] = []
+    
     def addPoint(self, x, y):
         if len(self.points) < 2:
             self.points.append(point(x, y))

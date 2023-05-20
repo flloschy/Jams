@@ -92,9 +92,8 @@ def nearestPointOnLines(lines, xM, yM):
 
     casts = []
 
-    for line in lines:
-        for point in cast_all([(x, line.points[i+1]) for i, x in enumerate(line.points) if i!= len(line.points) - 1], (xM, yM)):
-            casts.append(point[0])
+    for point in cast_all([(x, lines[-1].points[i+1]) for i, x in enumerate(lines[-1].points) if i!= len(lines[-1].points) - 1], (xM, yM)):
+        casts.append(point[0])
 
     close = closest(casts)
     if not close: return False

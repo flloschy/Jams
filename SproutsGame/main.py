@@ -217,7 +217,7 @@ class Line:
 
 
     def smoothOut(self):
-        if len(self.points) > 3:
+        if len(self.points) > 5:
             x = [p.x for p in self.points]
             y = [p.y for p in self.points]
             t = np.linspace(0, 1, len(self.points) - 2, endpoint=True)

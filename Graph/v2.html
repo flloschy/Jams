@@ -143,10 +143,10 @@
           ctx.stroke();
 
           // just for the glow
-          ctx.lineWidth = 0.3;
+          ctx.lineWidth = 0.25;
           ctx.strokeStyle = "#fff";
           ctx.beginPath();
-          for (let x = 0; x < canvas.width * animationState; x += 1) {
+          for (let x = 0; x < canvas.width * (animationState**3); x += 1) {
             let xVal = (x - view.offset.x) / view.zoom / 50;
             let yVal = f(xVal);
             let y = view.offset.y - yVal * 50 * view.zoom;

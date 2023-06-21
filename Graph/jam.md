@@ -15,3 +15,5 @@ Im very happy with how v2 ended in contrast to v1. \
 Given that this is my first actual thing with canvas, copilot did all the heavy lifting. \
 And I love it! \
 Had fun, good end result, 10/10 :D
+
+###### test it at [here](floschy.me/projects/graph)

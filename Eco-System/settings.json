@@ -1,0 +1,22 @@
+{
+    "main": {
+        "width": 1000,
+        "height": 1000,
+        "fps": 60,
+        "tps": 100
+    },
+
+    "generator": {
+        "blocksize": 5,
+        "width": 1000,
+        "height": 1000,
+        "randomseed": true,
+        "seed": 3,
+        "octaves": 3,
+        "waterthreshold": -0.1
+    },
+
+    "plantmanager": {
+        "max": 500
+    }
+}

@@ -1,0 +1,1 @@
+<a href="/login">When you don't get redirected click this to get back to login</a>

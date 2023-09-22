@@ -1,0 +1,14 @@
+{
+    "Time elapsed": "00:31:01",
+    "Connections made": 17715,
+    "Time per Line": "0.1051s",
+    "Similarity Score": "18355.6771",
+    "Improvement": "0.0000",
+    "Current Start": 0,
+    "Disconnects": 4000,
+    "continuousLine": false,
+    "image": "./img/github.png",
+    "dots": 2000,
+    "size": 500,
+    "color": 1
+}

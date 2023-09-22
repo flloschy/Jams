@@ -1,0 +1,14 @@
+{
+    "Time elapsed": "01:26:32",
+    "Connections made": 68885,
+    "Time per Line": "0.0754s",
+    "Similarity Score": "33542.4471",
+    "Improvement": "0.0000",
+    "Current Start": 0,
+    "Disconnects": 4000,
+    "continuousLine": false,
+    "image": "./img/cow.png",
+    "dots": 2000,
+    "size": 500,
+    "color": 1
+}

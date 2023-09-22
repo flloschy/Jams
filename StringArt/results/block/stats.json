@@ -1,0 +1,14 @@
+{
+    "Time elapsed": "00:31:46",
+    "Connections made": 19478,
+    "Time per Line": "0.0979s",
+    "Similarity Score": "19498.0288",
+    "Improvement": "0.0000",
+    "Current Start": 0,
+    "Disconnects": 4000,
+    "continuousLine": false,
+    "image": "./img/block.png",
+    "dots": 2000,
+    "size": 500,
+    "color": 1
+}

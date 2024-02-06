@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Particle Life</title>
+		<style>
+			body,html {
+                width: 100vw;
+                height: 100vh;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				background-color: black;
+			}
+			canvas {
+                z-index: 0;
+                position: absolute;
+				max-height: 100vh;
+                max-width: 100vw;
+				background-color: black;
+                aspect-ratio: 1/1;
+			}
+			#screen {
+				background-color: transparent;
+			}
+			#bg {
+				filter: blur(10px);
+			}
+            button {
+                position: absolute;
+                z-index: 9999;
+                opacity: 0;
+            }
+            button:hover {
+                opacity: 1;
+            }
+		</style>
+	</head>
+	<body onload="run()">
+		<script>
+            // Configuration //
+            
+			// How big the simulated area i
+			let simSize = 1000;
+
+			// How many colors are there
+			let colors = 10;
+
+			// How big is the Influence range of the particles
+			let range = 300;
+
+			// maximum force the force function can return
+			let strength = 100;
+
+			// how strong the global pushback force is
+			let hardness = 1000;
+
+			// How many particles are there
+			let particleAmount = 2500;
+            
+            
+            
+            
+            
+            
+
+            //////////////////////////
+            // Lookup table for the force function
+            const table = [];
+            const calcTable = () => {
+                table.length = 0;
+                for (let i = colors; i > 0; i--) {
+                    table.push(Array.from({ length: colors }).map(() => Math.random() * 200 - 100));
+                }
+            }
+            calcTable()
+            
+            //////////////////////////
+            const particles = Array.from({ length: particleAmount }).map(() => {
+                return {
+                    x: simSize * Math.random(),
+                    y: simSize * Math.random(),
+                    z: simSize * Math.random(),
+                    c: Math.floor(Math.random() * colors),
+                    vx: 0,
+                    vy: 0,
+                    vz: 0,
+                    i: 0,
+                };
+            });
+            
+            //////////////////////////
+            const mod = (value, addition = 0) => {
+                let n = (value + addition) % simSize;
+                if (n < 0) return simSize + n;
+                return n;
+            };
+            
+            //////////////////////////
+            const f = (distance, force) => {
+                if (distance > range) return 0;
+                if (distance < range * 0.125) return ((8 * distance) / range - 1) * (strength * hardness);
+                return ((-16 * force * Math.abs(distance - (9 / 16) * range)) / (7 * range) + force) * strength;
+            };
+            
+            //////////////////////////
+            let raster = Array.from({ length: Math.ceil((simSize / range + 1) ** 3) }).map(() => []);
+            let width = 0;
+            let height = 0;
+            
+            //////////////////////////
+			const run = () => {
+				const screen = document.getElementById("screen");
+				const background = document.getElementById("bg");
+				/** @type {CanvasRenderingContext2D} */
+				const ctx = screen.getContext("2d");
+				/** @type {CanvasRenderingContext2D} */
+				const bg = background.getContext("2d");
+
+				const draw = () => {
+					const aspectRatio = 1;
+					const windowAspectRatio = window.outerWidth / window.outerHeight;
+
+					if (windowAspectRatio > aspectRatio) {
+						background.width = screen.width = width = window.outerHeight * aspectRatio;
+						background.height = screen.height = height = window.outerHeight;
+					} else {
+						background.width = screen.width = width = window.outerWidth;
+						background.height = screen.height = height = window.outerWidth / aspectRatio;
+					}
+
+					particles.forEach((particle, i) => {
+						ctx.beginPath();
+						ctx.fillStyle = `hsl(${(200 / colors) * particle.c}, 80%, 50%)`;
+                        const particleSizeBasedOnZ = 2 * (1 - particle.z / simSize);
+						ctx.arc((particle.x / simSize) * width, (particle.y / simSize) * height, particleSizeBasedOnZ, 0, Math.PI * 2);
+						ctx.fill();
+
+						const neighbors = [];
+						const x = Math.floor(particle.x / range);
+						const y = Math.floor(particle.y / range);
+                        const z = Math.floor(particle.z / range);
+						for (let i = -1; i < 2; i++) {
+							for (let j = -1; j < 2; j++) {
+                                for (let k = -1; k < 2; k++) {
+								const nx = (x + i + Math.ceil(simSize / range)) % Math.ceil(simSize / range);
+								const ny = (y + j + Math.ceil(simSize / range)) % Math.ceil(simSize / range);
+                                const nz = (z + k + Math.ceil(simSize / range)) % Math.ceil(simSize / range);
+                                const index = nx + ny * Math.ceil(simSize / range) + nz * Math.ceil(simSize / range) * Math.ceil(simSize / range);
+								if (index >= 0 && index < raster.length) {
+									neighbors.push(...raster[index]);
+								}
+                                }
+							}
+						}
+
+						neighbors.forEach((particle2, i2) => {
+							if (i == i2) return;
+							let dx = particle2.x - particle.x;
+							let dy = particle2.y - particle.y;
+                            let dz = particle2.z - particle.z;
+
+							if (dx > simSize / 2) {
+								dx -= simSize;
+							}
+							if (dx < -simSize / 2) {
+								dx += simSize;
+							}
+							if (dy > simSize / 2) {
+								dy -= simSize;
+							}
+							if (dy < -simSize / 2) {
+								dy += simSize;
+							}
+                            if (dz > simSize / 2) {
+                                dz -= simSize;
+                            }
+                            if (dz < -simSize / 2) {
+                                dz += simSize;
+                            }
+
+                            const d = Math.sqrt(dx ** 2 + dy ** 2 + dz ** 2);
+							if (d > range) return;
+
+							let factor = table[particle.c][particle2.c];
+
+							let force = f(d, factor);
+
+							particle.vx += dx * force * 0.0000001;
+							particle.vy += dy * force * 0.0000001;
+                            particle.vz += dz * force * 0.0000001;
+						});
+
+						raster[particle.i].splice(raster[particle.i].indexOf(particle), 1);
+
+						particle.x = mod(particle.x, particle.vx);
+						particle.y = mod(particle.y, particle.vy);
+                        particle.z = mod(particle.z, particle.vz);
+
+						particle.vx = 0;
+						particle.vy = 0;
+                        particle.vz = 0;
+                        
+                        // 3d coordinates to 1d index
+						const index = Math.floor(particle.x / range) + Math.floor(particle.y / range) * Math.ceil(simSize / range) + Math.floor(particle.z / range) * Math.ceil(simSize / range) * Math.ceil(simSize / range);
+						particle.i = index;
+						raster[index].push(particle);
+					});
+
+					bg.drawImage(screen, 0, 0);
+					requestAnimationFrame(draw);
+				};
+				draw();
+			};
+		</script>
+            <button onclick="calcTable()">Redo Table</button>
+            <canvas id="bg"></canvas>
+            <canvas id="screen"></canvas>
+	</body>
+</html>
